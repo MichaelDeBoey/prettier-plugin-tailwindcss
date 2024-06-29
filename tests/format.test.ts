@@ -1,7 +1,8 @@
 import { describe, test } from 'vitest'
+import type { TestEntry } from './utils.js'
 import { format, no, t, yes } from './utils.js'
 
-let html = [
+let html: TestEntry[] = [
   t`<div class="${yes}"></div>`,
   t`<!-- <div class="${no}"></div> -->`,
   t`<div class="${no} {{ 'p-0 sm:p-0 m-0' }}"></div>`,
@@ -26,7 +27,7 @@ let html = [
   ],
 ]
 
-let css = [
+let css: TestEntry[] = [
   t`@apply ${yes};`,
   t`/* @apply ${no}; */`,
   t`@not-apply ${no};`,
@@ -37,7 +38,7 @@ let css = [
   ],
 ]
 
-let javascript = [
+let javascript: TestEntry[] = [
   t`;<div class="${yes}" />`,
   t`;<div ns:class="${no}" />`,
   t`/* <div class="${no}" /> */`,
@@ -94,15 +95,10 @@ let javascript = [
     ';<div class={`flex ` + `  ` + `text-red-500`} />',
     ';<div class={`flex ` + ` ` + `text-red-500`} />',
   ],
-  [
-    `;<div class={"before:content-['\\\\2248']"} />`,
-    `;<div class={"before:content-['\\\\2248']"} />`,
-  ],
 
-  [
-    `;<div class={\`before:content-['\\\\2248']\`} />`,
-    `;<div class={\`before:content-['\\\\2248']\`} />`,
-  ],
+  t`;<div class={"before:content-['\\\\2248']"} />`,
+  t`;<div class={\`before:content-['\\\\2248']\`} />`,
+  t`;<div class="before:content-['\\\\2248']" />`,
 
   [
     `;<div class={'object-cover' + (standalone ? ' aspect-square w-full' : ' min-h-0 grow basis-0')}></div>`,
@@ -117,7 +113,7 @@ javascript = javascript.concat(
   ]),
 )
 
-let vue = [
+let vue: TestEntry[] = [
   ...html,
   t`<div :class="'${yes}'"></div>`,
   t`<!-- <div :class="'${no}'"></div> -->`,
@@ -163,7 +159,7 @@ let vue = [
   ],
 ]
 
-let glimmer = [
+let glimmer: TestEntry[] = [
   t`<div class='${yes}'></div>`,
   t`<!-- <div class='${no}'></div> -->`,
   t`<div class='${yes} {{"${yes}"}}'></div>`,
@@ -205,7 +201,7 @@ let glimmer = [
   ],
 ]
 
-let tests = {
+let tests: Record<string, TestEntry[]> = {
   html,
   glimmer,
   lwc: html,
